@@ -18,6 +18,8 @@ function FileCard({ file, onOperationComplete }) {
     const [isPlayerOpen, setIsPlayerOpen] = useState(false);
     const [imageLoading, setImageLoading] = useState(true);
 
+    const backendUrl = import.meta.env.VITE_API_URL
+
     const handleDownload = async () => {
         try {
             // console.log(file._id); // DEBUGGING
@@ -138,7 +140,7 @@ function FileCard({ file, onOperationComplete }) {
                             file._id &&
                             (file.resourceType === "image" ||
                                 file.resourceType === "video")
-                                ? `http://localhost:8000/api/v1/files/thumbnail/${file._id}`
+                                ? `${backendUrl}/api/v1/files/thumbnail/${file._id}`
                                 : defaultThumbnail
                         }
                         loading="lazy"
