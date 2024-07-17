@@ -5,15 +5,18 @@ import { MainButton, PrimaryButton } from "./index.js";
 import fileService from "../services/file.service.js";
 import { updateStorageUsed } from "../store/userSlice.js";
 import { useDispatch } from "react-redux";
+import { Rings } from "react-loader-spinner";
 
 function Upload({ onOperationComplete, folderId }) {
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [file, setFile] = useState(null);
-    const [fileSize, setFileSize] = useState(0); // Store file size
+    const [isUploading, setIsUploading] = useState(false);
 
     const handleUpload = async () => {
         try {
+            setIsUploading(true);
+
             const formData = new FormData();
             formData.append("file", file);
             // console.log("File: ", file); // DEBUGGING
@@ -30,8 +33,8 @@ function Upload({ onOperationComplete, folderId }) {
             }
 
             setIsOpen(false);
+            setIsUploading(false);
             onOperationComplete();
-            return response;
         } catch (error) {
             console.log(error);
         }
@@ -40,7 +43,6 @@ function Upload({ onOperationComplete, folderId }) {
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
-        setFileSize(selectedFile.size); // Store file size
     };
 
     return (
@@ -57,30 +59,46 @@ function Upload({ onOperationComplete, folderId }) {
                 className="relative z-50"
             >
                 <div className="fixed inset-0 flex w-screen items-center justify-center mx-auto bg-black bg-opacity-75">
-                    <DialogPanel className="w-full max-w-96 bg-glass px-4 py-6 rounded-lg flex flex-col gap-6 border border-borderCol border-opacity-10">
-                        <DialogTitle className="w-full text-xl font-light text-textCol text-center">
-                            Upload Image or Video File
-                        </DialogTitle>
-                        <div className="w-full flex flex-col gap-3">
-                            <label
-                                className="text-textCol w-full text-left px-1"
-                                htmlFor="email"
-                            >
-                                File:
-                            </label>
-                            <input
-                                name="file"
-                                type="file"
-                                onChange={handleFileChange}
-                                className=""
-                            />
-                        </div>
-                        <div className="flex justify-center items-center w-full h-10 mt-4 mb-3">
-                            <PrimaryButton
-                                action={handleUpload}
-                                title="Upload"
-                            />
-                        </div>
+                    <DialogPanel className="w-full max-w-96 h-64 bg-glass px-4 py-6 rounded-lg flex flex-col gap-6">
+                        {isUploading ? (
+                            <DialogTitle className="w-full text-xl font-light text-textCol text-center">
+                                Uploading...
+                            </DialogTitle>
+                        ) : (
+                            <DialogTitle className="w-full text-xl font-light text-textCol text-center">
+                                Upload Image or Video File
+                            </DialogTitle>
+                        )}
+
+                        {isUploading ? (
+                            <div className="w-full h-full flex justify-center items-center">
+                                <Rings width={64} color="#828FFF" />
+                            </div>
+                        ) : (
+                            <>
+                                <div className="w-full flex flex-col justify-center gap-3 my-1">
+                                    <label
+                                        className="text-textCol w-full text-left px-1"
+                                        htmlFor="email"
+                                    >
+                                        File:
+                                    </label>
+                                    <input
+                                        name="file"
+                                        type="file"
+                                        onChange={handleFileChange}
+                                        className="text-textCol w-full"
+                                    />
+                                </div>
+
+                                <div className="flex justify-center items-center w-full min-h-10 mt-2 mb-4">
+                                    <PrimaryButton
+                                        action={handleUpload}
+                                        title="Upload"
+                                    />
+                                </div>
+                            </>
+                        )}
                     </DialogPanel>
                 </div>
             </Dialog>

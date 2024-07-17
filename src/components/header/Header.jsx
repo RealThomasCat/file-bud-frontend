@@ -61,11 +61,11 @@ function Header() {
                                 {/* storageUsed */}
                                 {location.pathname !== "/" && (
                                     <div
-                                        className="h-full flex gap-2 border-2 border-primary rounded-full p-1 cursor-pointer"
+                                        className="h-full flex gap-1.5 border-2 border-primary rounded-full p-1 cursor-pointer"
                                         onClick={() => setStorage(!storage)}
                                     >
                                         <div
-                                            className={`h-full text-base flex justify-center items-center rounded-full text-primary font-medium pl-3 ${storage ? "flex" : "hidden"}`}
+                                            className={`h-full text-base flex justify-center items-center rounded-full text-primary font-medium pl-1.5 ${storage ? "flex" : "hidden"}`}
                                         >
                                             <h1 className="text-primary">
                                                 {(

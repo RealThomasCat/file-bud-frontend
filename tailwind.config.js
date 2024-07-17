@@ -8,7 +8,7 @@ export default {
                 bgCol: "#121212",
                 glass: "#242424",
                 borderCol: "#FFFFFF",
-                textCol: "#EFEFEF",
+                textCol: "#F1F1F1",
                 hoverCol: "#3B3B3B",
             },
         },

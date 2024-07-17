@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import defaultThumbnail from "../assets/DefaultThumbnail.png";
-import { MainButton, OptionsButton } from "./index.js";
+import { MainButton, OptionsButton, PrimaryButton } from "./index.js";
 import imageIcon from "../assets/ImageIcon.svg";
 import videoIcon from "../assets/VideoIcon.svg";
 import fileIcon from "../assets/FileIcon.svg";
@@ -10,15 +10,19 @@ import closeIcon from "../assets/CloseIcon.svg";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import fileService from "../services/file.service.js";
 import Player from "./Player.jsx";
+import { Rings } from "react-loader-spinner";
+import playIcon from "../assets/PlayIcon2.svg";
 
 function FileCard({ file, onOperationComplete }) {
     const [fileUrl, setFileUrl] = useState(null);
     const [videoUrl, setVideoUrl] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isPlayerOpen, setIsPlayerOpen] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [imageLoading, setImageLoading] = useState(true);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
-    const backendUrl = import.meta.env.VITE_API_URL
+    const backendUrl = import.meta.env.VITE_API_URL;
 
     const handleDownload = async () => {
         try {
@@ -75,10 +79,12 @@ function FileCard({ file, onOperationComplete }) {
 
     const handleDelete = async () => {
         try {
+            setDeleteLoading(true);
             const response = await fileService.deleteFile(file._id);
 
             if (response.status === 200) {
                 setIsOpen(false);
+                // setIsConfirmOpen(false);
                 onOperationComplete();
             }
         } catch (error) {
@@ -98,7 +104,11 @@ function FileCard({ file, onOperationComplete }) {
                         ? showFile
                         : file.resourceType === "video"
                           ? playVideo
-                          : null
+                          : () => {
+                                alert(
+                                    "This file type is not supported for preview."
+                                );
+                            }
                 }
                 className="aspect-square text-textCol flex flex-col gap-3 bg-glass p-2 rounded-lg overflow-hidden"
             >
@@ -127,13 +137,13 @@ function FileCard({ file, onOperationComplete }) {
                         type="file"
                         file={file}
                         handleDownload={handleDownload}
-                        handleDelete={handleDelete}
+                        handleDelete={() => setIsConfirmOpen(true)}
                         showDetails={showDetails}
                     />
                 </div>
 
                 {/* Thumbnail */}
-                <div className="h-full w-full aspect-auto rounded-sm overflow-hidden">
+                <div className="h-full w-full aspect-auto rounded-sm overflow-hidden relative">
                     <img
                         // src={thumbnailLink ? thumbnailLink : defaultThumbnail}
                         src={
@@ -147,6 +157,14 @@ function FileCard({ file, onOperationComplete }) {
                         alt="Khalistani Billa"
                         className="w-full h-full object-cover rounded-sm"
                     />
+
+                    {file.resourceType === "video" && (
+                        <img
+                            src={playIcon}
+                            alt="playIcon"
+                            className="absolute top-1/2 left-1/2 w-10 h-10 transform -translate-x-1/2 -translate-y-1/2"
+                        />
+                    )}
                 </div>
             </div>
 
@@ -177,7 +195,7 @@ function FileCard({ file, onOperationComplete }) {
                                     <MainButton
                                         // title="Delete"
                                         icon={deleteIcon}
-                                        action={handleDelete}
+                                        action={() => setIsConfirmOpen(true)}
                                         v2
                                     />
 
@@ -199,7 +217,6 @@ function FileCard({ file, onOperationComplete }) {
                             className={`h-full w-full ${imageLoading ? "hidden" : null} bg-white`}
                         >
                             <img
-                                // TODO: Fetch file from backend
                                 src={fileUrl}
                                 alt={file.title}
                                 className="h-full object-contain"
@@ -220,6 +237,45 @@ function FileCard({ file, onOperationComplete }) {
                 <div className="fixed inset-0 flex flex-col w-screen items-center justify-center mx-auto bg-black bg-opacity-75">
                     <DialogPanel className="w-[64rem] max-w-5xl">
                         <Player file={file} videoUrl={videoUrl} />
+                    </DialogPanel>
+                </div>
+            </Dialog>
+
+            <Dialog
+                open={isConfirmOpen}
+                onClose={() => setIsConfirmOpen(false)}
+                className="z-50"
+            >
+                <div className="fixed inset-0 flex flex-col w-screen items-center justify-center mx-auto bg-black bg-opacity-75">
+                    <DialogPanel className="w-full max-w-96 h-40 bg-glass my-auto px-6 py-6 rounded-lg flex flex-col items-center gap-6 text-textCol">
+                        {deleteLoading ? (
+                            <h1 className="text-xl text-textCol font-light">
+                                Deleting...
+                            </h1>
+                        ) : (
+                            <h1 className="text-xl text-textCol font-light">
+                                Are you sure?
+                            </h1>
+                        )}
+
+                        {deleteLoading ? (
+                            <Rings width={64} color="#828FFF" />
+                        ) : (
+                            <div className="h-12 w-full flex gap-4 ">
+                                <button
+                                    onClick={() => setIsConfirmOpen(false)}
+                                    className="bg-glass border-2 border-primary w-full h-10 rounded-full uppercase font-medium text-lg pb-[1px] text-primary"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleDelete}
+                                    className="bg-primary w-full h-10 rounded-full uppercase font-medium text-lg pb-[1px] text-textCol"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        )}
                     </DialogPanel>
                 </div>
             </Dialog>
