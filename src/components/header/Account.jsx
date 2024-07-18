@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 function Account() {
     // Retrieve the user's name from the Redux store
     const userName = useSelector((state) => state.user.user.fullname);
-    console.log(userName);
+    // console.log(userName); // DEBUGGING
     const [firstLetter, setFirstLetter] = useState("");
 
     useEffect(() => {
@@ -15,7 +15,7 @@ function Account() {
 
     // Render the button with the first letter of the user's name
     return (
-        <button className="h-full aspect-square rounded-full bg-primary text-xl text-textCol uppercase">
+        <button className="h-full aspect-square rounded-full bg-primary text-xl text-textCol uppercase cursor-default">
             {firstLetter || "?"} {/* Show '?' as a fallback */}
         </button>
     );

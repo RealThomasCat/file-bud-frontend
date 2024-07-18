@@ -110,7 +110,7 @@ function FileCard({ file, onOperationComplete }) {
                                 );
                             }
                 }
-                className="aspect-square text-textCol flex flex-col gap-3 bg-glass p-2 rounded-lg overflow-hidden"
+                className="aspect-square text-textCol flex flex-col gap-3 bg-glass hover:bg-glassHov duration-500 p-2 rounded-lg overflow-hidden"
             >
                 <div className="w-full flex justify-between items-center pl-1">
                     <div className="w-full h-full flex items-center gap-2 overflow-hidden">

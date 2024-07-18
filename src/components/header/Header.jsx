@@ -13,7 +13,7 @@ import cloudIcon from "../../assets/CloudIcon.svg";
 
 function Header() {
     const [storage, setStorage] = useState(true);
-    console.log("Hello from Header.jsx"); // DEBUGGING
+    // console.log("Hello from Header.jsx"); // DEBUGGING
 
     // Get the user authentication status from the redux store
     const location = useLocation();
@@ -61,13 +61,13 @@ function Header() {
                                 {/* storageUsed */}
                                 {location.pathname !== "/" && (
                                     <div
-                                        className="h-full flex gap-1.5 border-2 border-primary rounded-full p-1 cursor-pointer"
+                                        className="h-full flex border-2 border-primary rounded-full p-1 cursor-pointer group"
                                         onClick={() => setStorage(!storage)}
                                     >
                                         <div
-                                            className={`h-full text-base flex justify-center items-center rounded-full text-primary font-medium pl-1.5 ${storage ? "flex" : "hidden"}`}
+                                            className={`h-full text-base flex justify-center items-center rounded-full text-primary font-medium w-[136px] group-hover:tracking-wider duration-500 ${storage ? "flex" : "hidden"}`}
                                         >
-                                            <h1 className="text-primary">
+                                            <h1 className="text-primary ml-1">
                                                 {(
                                                     storageUsed /
                                                     (1024 * 1024 * 1024)

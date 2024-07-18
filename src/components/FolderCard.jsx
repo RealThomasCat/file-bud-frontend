@@ -24,7 +24,7 @@ function FolderCard({ folder, onOperationComplete }) {
     return (
         <div
             onDoubleClick={() => navigate(`/folders/${folder._id}`)}
-            className="h-fit text-textCol flex justify-between items-center gap-3 bg-glass pl-3 pr-1 py-2 rounded-lg overflow-hidden"
+            className="h-fit text-textCol flex justify-between items-center gap-3 bg-glass hover:bg-glassHov duration-500 pl-3 pr-1 py-2 rounded-lg overflow-hidden"
         >
             <div className="w-full h-full flex items-center gap-2 overflow-hidden">
                 <div className="h-full ">
