@@ -36,6 +36,8 @@ function Upload({ onOperationComplete, folderId }) {
             setIsUploading(false);
             onOperationComplete();
         } catch (error) {
+            setIsOpen(false);
+            setIsUploading(false);
             console.log(error);
         }
     };

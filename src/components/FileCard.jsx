@@ -88,6 +88,7 @@ function FileCard({ file, onOperationComplete }) {
                 onOperationComplete();
             }
         } catch (error) {
+            setDeleteLoading(false);
             console.log(error);
         }
     };
