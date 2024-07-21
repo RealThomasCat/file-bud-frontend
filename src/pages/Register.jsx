@@ -35,7 +35,7 @@ const Register = () => {
 
                 navigate("/login");
             } catch (error) {
-                setRegError(error.message);
+                setRegError(error.response.data.message);
             }
         }
     };
@@ -111,12 +111,15 @@ const Register = () => {
                     </div>
                 </div>
 
-                {(regError ||
-                    errors.fullname ||
+                {(errors.fullname ||
                     errors.email ||
-                    errors.password) && (
+                    errors.password ||
+                    regError) && (
                     <p className="w-full text-center text-red-500 mt-6">
-                        User register failed!
+                        {errors.fullname ||
+                            errors.email ||
+                            errors.password ||
+                            regError}
                     </p>
                 )}
             </div>

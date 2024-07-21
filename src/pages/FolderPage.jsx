@@ -9,6 +9,7 @@ import {
 import folderService from "../services/folder.service.js";
 import { Link, useParams } from "react-router-dom";
 import CreateFolder from "../components/CreateFolder.jsx";
+import { Rings, TailSpin } from "react-loader-spinner";
 
 function FolderPage() {
     const { folderId } = useParams();
@@ -42,7 +43,9 @@ function FolderPage() {
                     {error ? (
                         <h1 className="text-white">{error}</h1>
                     ) : (
-                        <h1 className="text-white">Loading...</h1>
+                        <div className="w-full flex justify-center">
+                            <TailSpin width={48} color="#828FFF" />
+                        </div>
                     )}
                 </Container>
             </div>

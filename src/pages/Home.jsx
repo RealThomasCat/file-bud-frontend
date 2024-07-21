@@ -8,6 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import folderService from "../services/folder.service.js";
 import CreateFolder from "../components/CreateFolder.jsx";
+import { Rings, TailSpin } from "react-loader-spinner";
 
 function Home() {
     const [folder, setFolder] = useState(null);
@@ -41,7 +42,9 @@ function Home() {
                     {error ? (
                         <h1 className="text-white">{error}</h1>
                     ) : (
-                        <h1 className="text-white">Loading...</h1>
+                        <div className="w-full flex justify-center">
+                            <TailSpin width={48} color="#828FFF" />
+                        </div>
                     )}
                 </Container>
             </div>

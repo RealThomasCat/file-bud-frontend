@@ -27,6 +27,14 @@ const Login = () => {
         }
     };
 
+    const handleGuestLogin = () => {
+        // setEmail("example@email.com");
+        // setPassword("example@123");
+        dispatch(
+            loginUser({ email: "example@email.com", password: "example@123" })
+        );
+    };
+
     return (
         <Container>
             <div className="flex flex-col w-full mt-24 items-center justify-center">
@@ -71,14 +79,28 @@ const Login = () => {
                             className={`w-full h-10 py-2 px-3 pb-2.5 rounded-lg bg-bgCol text-textCol focus:outline-none ${errors.password && "border border-red-500"}`}
                         />
                     </div>
-                    <div className="w-full flex justify-center h-10 mt-4 mb-3">
-                        <PrimaryButton action={handleLogin} title="Login" />
+
+                    <div className="w-full flex gap-3">
+                        <div className="w-full flex justify-center h-10 mt-4 mb-3">
+                            <PrimaryButton
+                                action={handleLogin}
+                                title="Login"
+                                v2
+                            />
+                        </div>
+                        <div className="w-full flex justify-center h-10 mt-4 mb-3">
+                            <PrimaryButton
+                                action={handleGuestLogin}
+                                title="Guest"
+                                v2
+                            />
+                        </div>
                     </div>
                 </div>
 
-                {(loginError || errors.email || errors.password) && (
+                {(errors.email || errors.password || loginError) && (
                     <div className="w-full text-center text-red-500 mt-6">
-                        Login failed!
+                        {errors.email || errors.password || loginError}
                     </div>
                 )}
             </div>

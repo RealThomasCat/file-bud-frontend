@@ -4,6 +4,7 @@ import { Header } from "./components";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { getUser } from "./store/userSlice";
+import { TailSpin } from "react-loader-spinner";
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -21,12 +22,13 @@ function App() {
                 <Header />
                 <main>
                     <Outlet />
-                    {/* // Outlet: This is where the child components will be rendered */}
                 </main>
             </div>
         </div>
     ) : (
-        <h1 className=" text-3xl font-bold"> Loading... </h1> // TODO: Add a spinner
+        <div className="w-full min-h-screen px-6 text-3xl font-bold text-textCol bg-red-400">
+            <TailSpin width={64} color="#828FFF" />
+        </div>
     );
 }
 

@@ -10,7 +10,7 @@ import closeIcon from "../assets/CloseIcon.svg";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import fileService from "../services/file.service.js";
 import Player from "./Player.jsx";
-import { Rings } from "react-loader-spinner";
+import { TailSpin } from "react-loader-spinner";
 import playIcon from "../assets/PlayIcon2.svg";
 
 function FileCard({ file, onOperationComplete }) {
@@ -88,8 +88,9 @@ function FileCard({ file, onOperationComplete }) {
                 onOperationComplete();
             }
         } catch (error) {
+            alert(error.response.data.message);
             setDeleteLoading(false);
-            console.log(error);
+            setIsConfirmOpen(false);
         }
     };
 
@@ -155,7 +156,7 @@ function FileCard({ file, onOperationComplete }) {
                                 : defaultThumbnail
                         }
                         loading="lazy"
-                        alt="Khalistani Billa"
+                        alt={file.title}
                         className="w-full h-full object-cover rounded-sm"
                     />
 
@@ -212,7 +213,7 @@ function FileCard({ file, onOperationComplete }) {
 
                         {/* Image */}
                         {imageLoading && (
-                            <h1 className="text-textCol text-lg">Loading...</h1>
+                            <TailSpin width={48} color="#828FFF" />
                         )}
                         <div
                             className={`h-full w-full ${imageLoading ? "hidden" : null} bg-white`}
@@ -260,7 +261,7 @@ function FileCard({ file, onOperationComplete }) {
                         )}
 
                         {deleteLoading ? (
-                            <Rings width={64} color="#828FFF" />
+                            <TailSpin width={48} color="#828FFF" />
                         ) : (
                             <div className="h-12 w-full flex gap-4 ">
                                 <button

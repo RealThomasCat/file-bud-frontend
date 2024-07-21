@@ -5,7 +5,7 @@ import { MainButton, PrimaryButton } from "./index.js";
 import fileService from "../services/file.service.js";
 import { updateStorageUsed } from "../store/userSlice.js";
 import { useDispatch } from "react-redux";
-import { Rings } from "react-loader-spinner";
+import { TailSpin } from "react-loader-spinner";
 
 function Upload({ onOperationComplete, folderId }) {
     const dispatch = useDispatch();
@@ -36,9 +36,9 @@ function Upload({ onOperationComplete, folderId }) {
             setIsUploading(false);
             onOperationComplete();
         } catch (error) {
+            alert(error.response.data.message); // TODO: TEST
             setIsOpen(false);
             setIsUploading(false);
-            console.log(error);
         }
     };
 
@@ -74,7 +74,7 @@ function Upload({ onOperationComplete, folderId }) {
 
                         {isUploading ? (
                             <div className="w-full h-full flex justify-center items-center">
-                                <Rings width={64} color="#828FFF" />
+                                <TailSpin width={48} color="#828FFF" />
                             </div>
                         ) : (
                             <>

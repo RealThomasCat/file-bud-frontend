@@ -6,11 +6,11 @@ export const loginUser = createAsyncThunk(
     async ({ email, password }, thunkAPI) => {
         try {
             const response = await userService.login(email, password);
-            console.log(response.data); // DEBUGGING
+            // console.log(response.data); // DEBUGGING
             return response.data;
         } catch (error) {
-            console.log(error.message); // DEBUGGING
-            return thunkAPI.rejectWithValue(error.message);
+            console.log(error); // DEBUGGING
+            return thunkAPI.rejectWithValue(error.response.data.message);
         }
     }
 );
@@ -25,7 +25,7 @@ export const getUser = createAsyncThunk("user/getUser", async (_, thunkAPI) => {
         // console.log(response.data); // DEBUGGING
         return response.data;
     } catch (error) {
-        return thunkAPI.rejectWithValue(error.message);
+        return thunkAPI.rejectWithValue(error.response.data.message);
     }
 });
 
