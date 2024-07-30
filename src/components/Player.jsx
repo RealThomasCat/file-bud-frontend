@@ -12,7 +12,7 @@ function Player({ file, videoUrl }) {
         <div>
             <MediaPlayer
                 // aspectRatio="16/9"
-                className="max-w-5xl w-[64rem]"
+                className="max-w-5xl w-full"
                 title={file.title}
                 src={videoUrl}
             >

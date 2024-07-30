@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import defaultThumbnail from "../assets/DefaultThumbnail.png";
 import { MainButton, OptionsButton, PrimaryButton } from "./index.js";
 import imageIcon from "../assets/ImageIcon.svg";
@@ -21,8 +21,48 @@ function FileCard({ file, onOperationComplete }) {
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [imageLoading, setImageLoading] = useState(true);
     const [deleteLoading, setDeleteLoading] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     const backendUrl = import.meta.env.VITE_API_URL;
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768); // You can adjust the width as needed
+        };
+
+        // Initial check
+        handleResize();
+
+        // Listen for resize events
+        window.addEventListener("resize", handleResize);
+
+        // Clean up the event listener on component unmount
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    const handleClick = () => {
+        if (isMobile) {
+            handleFileAction();
+        }
+    };
+
+    const handleDoubleClick = () => {
+        if (!isMobile) {
+            handleFileAction();
+        }
+    };
+
+    const handleFileAction = () => {
+        if (file.resourceType === "image" && file.format !== "pdf") {
+            showFile();
+        } else if (file.resourceType === "video") {
+            playVideo();
+        } else {
+            alert("This file type is not supported for preview.");
+        }
+    };
 
     const handleDownload = async () => {
         try {
@@ -101,17 +141,8 @@ function FileCard({ file, onOperationComplete }) {
     return (
         <>
             <div
-                onDoubleClick={
-                    file.resourceType === "image" && file.format !== "pdf"
-                        ? showFile
-                        : file.resourceType === "video"
-                          ? playVideo
-                          : () => {
-                                alert(
-                                    "This file type is not supported for preview."
-                                );
-                            }
-                }
+                onClick={handleClick}
+                onDoubleClick={handleDoubleClick}
                 className="aspect-square text-textCol flex flex-col gap-3 bg-glass hover:bg-glassHov duration-500 p-2 rounded-lg overflow-hidden"
             >
                 <div className="w-full flex justify-between items-center pl-1">
@@ -130,7 +161,7 @@ function FileCard({ file, onOperationComplete }) {
                             />
                         </div>
 
-                        <h1 className="w-4/5 line-clamp-1 text-ellipsis overflow-hidden">
+                        <h1 className="w-4/5 line-clamp-1 text-ellipsis overflow-hidden text-sm md:text-base">
                             {file.title}
                         </h1>
                     </div>
@@ -181,9 +212,11 @@ function FileCard({ file, onOperationComplete }) {
                 <div className="fixed inset-0 flex flex-col w-screen items-center justify-center mx-auto bg-black bg-opacity-75">
                     <DialogPanel className="w-fit h-full pt-28 mb-8 flex flex-col justify-center items-center">
                         {/* Header */}
-                        <div className="fixed max-h-24 min-h-24 h-24 max-w-7xl w-full p-4 top-0 text-xl">
-                            <div className="w-full h-full p-3 flex justify-between items-center bg-glass text-xl rounded-full text-textCol text-center">
-                                <div className="px-4 pb-0.5">{file.title}</div>
+                        <div className="fixed max-h-24 min-h-24 h-24 max-w-7xl w-full p-4 top-0">
+                            <div className="w-full h-full p-3 flex justify-between items-center bg-glass md:text-xl rounded-full text-textCol text-center">
+                                <h1 className="px-4 pb-0.5 overflow-hidden text-ellipsis">
+                                    {file.title}
+                                </h1>
 
                                 {/* TODO: Height of this width is 38 but it should be 40 */}
                                 <div className="h-full flex gap-3">
@@ -216,7 +249,7 @@ function FileCard({ file, onOperationComplete }) {
                             <TailSpin width={48} color="#828FFF" />
                         )}
                         <div
-                            className={`h-full w-full ${imageLoading ? "hidden" : null} bg-white`}
+                            className={`h-full w-full ${imageLoading ? "hidden" : null}`}
                         >
                             <img
                                 src={fileUrl}
@@ -237,7 +270,7 @@ function FileCard({ file, onOperationComplete }) {
                 className="z-50"
             >
                 <div className="fixed inset-0 flex flex-col w-screen items-center justify-center mx-auto bg-black bg-opacity-75">
-                    <DialogPanel className="w-[64rem] max-w-5xl">
+                    <DialogPanel className="md:w-[64rem] max-w-5xl">
                         <Player file={file} videoUrl={videoUrl} />
                     </DialogPanel>
                 </div>

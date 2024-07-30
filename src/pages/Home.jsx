@@ -52,13 +52,13 @@ function Home() {
     }
     return (
         <Container>
-            <div className="h-16 py-3 flex justify-between items-center">
-                <h1 className="text-2xl font-medium text-white">
+            <div className="md:h-16 py-3 flex md:justify-between md:items-center md:flex-row flex-col gap-4">
+                <h1 className="md:text-2xl font-medium text-white">
                     Folder Name:{" "}
                     {folder.title === "Root" ? "My Drive" : folder.title}
                 </h1>
 
-                <div className="w-fit h-full flex gap-4">
+                <div className="w-fit h-8 md:h-full flex gap-4">
                     <Upload
                         onOperationComplete={fetchFolder}
                         folderId={rootFolderId}
@@ -76,7 +76,7 @@ function Home() {
                 <div className="flex flex-col gap-2">
                     {/* Folders */}
                     {subfolders && subfolders.length > 0 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-4">
                             {subfolders.map((subfolder) => (
                                 <div key={subfolder._id}>
                                     <FolderCard
@@ -90,7 +90,7 @@ function Home() {
 
                     {/* Files */}
                     {files && files.length > 0 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-4">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 py-4">
                             {files.map((file) => (
                                 <div key={file._id}>
                                     <FileCard
