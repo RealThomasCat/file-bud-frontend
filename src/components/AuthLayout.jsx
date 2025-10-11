@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { TailSpin } from "react-loader-spinner";
 
 export default function Protected({ children, authentication = true }) {
     const navigate = useNavigate();
@@ -17,5 +18,9 @@ export default function Protected({ children, authentication = true }) {
         }
     }, [authStatus, loading, navigate, authentication]);
 
-    return loading ? <h1>Loading...</h1> : <>{children}</>;
+    return loading ? 
+        <div className="w-full flex justify-center">
+            <TailSpin width={48} color="#828FFF" />
+        </div>
+        : <>{children}</>;
 }
